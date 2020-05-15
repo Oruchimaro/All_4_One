@@ -14,9 +14,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/**
+ * Blog routes
+ */
+Route::name('blog.')->prefix('blog')->group(function () {
+	Route::get('/', 'Blog\BlogController@index')->name('index');
+	Route::get('/mine', 'Blog\BlogController@mine')->name('mine');
+	Route::get('/create', 'Blog\PostController@create')->name('create');
+	Route::post('/create/post', 'Blog\PostController@store')->name('post.store');
+	Route::get('/view/{post:slug}', 'Blog\PostController@show')->name('post.show');
+	Route::get('/update/{post:slug}', 'Blog\PostController@edit')->name('post.edit');
+	Route::put('/update/{post:slug}', 'Blog\PostController@update')->name('post.update');
+	Route::delete('/delete/{post:slug}', 'Blog\PostController@destroy')->name('post.destroy');
+});
