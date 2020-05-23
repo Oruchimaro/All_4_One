@@ -18,6 +18,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('css/persianDatepicker-default.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script src="{{ asset('js/persianDatepicker.min.js') }}" defer></script>
 </head>
 <body>
     <div id="app">
@@ -78,5 +82,15 @@
         </main>
         </v-app>
     </div>
+
+    <script type="text/javascript">
+        $(function() {
+            $("#dob").persianDatepicker({
+                cellWidth: 40, // by px
+                cellHeight: 40, // by px
+                fontSize: 23, // by px    
+            });       
+        });
+    </script>
 </body>
 </html>
