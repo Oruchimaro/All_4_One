@@ -12,13 +12,17 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->integer('author_id');
+            $table->unsignedBigInteger('author_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->text('body');
             $table->string('cover_img')->nullable();
             $table->enum('status', ['PUBLISHED', 'DRAFT', 'PENDING'])->default('DRAFT');
             $table->boolean('allow_comments')->default(false);
             $table->string('seo_title')->nullable();
             $table->timestamps();
+
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('blog_categories')->onDelete('cascade');
         });
     }
 

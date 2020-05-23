@@ -69,6 +69,15 @@
                     <option value="PUBLISHED">PUBLISHED</option>
                 </select>
             </div>
+
+            <div class=" col">
+                <select class="custom-select mb-3" name="category_id">
+                    @foreach ($categories as $category)
+                    <option value="{{$category->id}}">{{$category->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+
         </div>
         <div class="form-group row">
             <div class="col-sm-10">

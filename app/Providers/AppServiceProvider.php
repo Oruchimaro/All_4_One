@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \View::composer('Blog.*', function ($view) {
+            $view->with('categories', \App\Blog\BlogCategories::all());
+        });
     }
 }

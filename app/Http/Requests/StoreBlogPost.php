@@ -26,7 +26,8 @@ class StoreBlogPost extends FormRequest
         return [
             'title' => 'required|unique:posts|max:255',
             'body' => 'required',
-            'cover_img' => 'required|mimes:jpeg,bmp,png'
+            'cover_img' => 'required|mimes:jpeg,bmp,png',
+            'category_id' => 'required'
         ];
     }
 
@@ -39,6 +40,7 @@ class StoreBlogPost extends FormRequest
             'body.required'  => 'A Post body is required',
             'cover_img.required'  => 'A Image is required',
             'cover_img.mimes'  => 'A Image must be jpg png or bmp',
+            'category_id.required'  => 'Category is required',
         ];
     }
 }

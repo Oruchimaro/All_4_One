@@ -2,12 +2,12 @@
 
 @section ('content')
 <div class="container">
-<form action="{{ route('blog.post.update', $post) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('blog.post.update', ['post'=>$post,'category'=>$post->category]) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="form-row">
             <div class="col">
-            <input type="text" class="form-control @if($errors->get('title')) is-invalid @endif" name="title" value="{{$post->title}}">
+                <input type="text" class="form-control @if($errors->get('title')) is-invalid @endif" name="title" value="{{$post->title}}">
                 @if ($errors->has('title')) <div class="invalid-feedback">
                     @foreach ($errors->get('title') as $messages )
                     {{ $messages }}
@@ -70,6 +70,14 @@
                     <option @if($post->status == 'PUBLISHED') selected @endif value="PUBLISHED">PUBLISHED</option>
                 </select>
             </div>
+            <div class=" col">
+                <select class="custom-select mb-3" name="category_id">
+                    @foreach ($categories as $category)
+                    <option @if ($category->id == $post->category_id) selected @endif value="{{$category->id}}">{{$category->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+
         </div>
         <div class="form-group row">
             <div class="col-sm-10">
