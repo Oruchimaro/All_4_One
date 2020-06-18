@@ -3,12 +3,15 @@
 namespace App\Blog;
 
 use App\User;
+use App\traits\commentable;
 use App\Blog\BlogCategories;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Post extends Model
 {
+    use commentable;
+
     protected $with = ['category'];
 
     protected $fillable = [
@@ -24,5 +27,11 @@ class Post extends Model
     public function category()
     {
         return $this->belongsTo(BlogCategories::class);
+    }
+
+
+    public function path()
+    {
+        return '/blog/view/' . $this->category->slug . '/' . $this->slug;
     }
 }

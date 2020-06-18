@@ -14,9 +14,9 @@ class BlogController extends Controller
     public function index()
     {
         $posts = Post::whereStatus('PUBLISHED')
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-        
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         return view('Blog.home', compact('posts'));
     }
 
@@ -25,9 +25,9 @@ class BlogController extends Controller
         $id = auth()->id();
 
         $posts = Post::whereAuthorId($id)
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-        
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         return view('Blog.home', compact('posts'));
     }
 }

@@ -39,4 +39,9 @@ Route::name('blog.')->prefix('blog')->group(function () {
     Route::get('/category', 'Blog\BlogCategoriesController@index')->name('category.index');
     Route::post('/category', 'Blog\BlogCategoriesController@store')->name('category.store');
     Route::delete('/category/{category}', 'Blog\BlogCategoriesController@destroy')->name('category.destroy');
+    Route::post('/post/{post:slug}/comment', 'CommentController@commentPost')->name('post.comment');
+    Route::delete('/comment/{comment}', 'CommentController@destroy')->name('comment.delete');
+
+    Route::get('/notifs/{app}', 'NotificationsController@readAllNotifications')->name('notifs.readAll');
+    Route::get('/notifs/read/{id}', 'NotificationsController@readNotification')->name('notifs.read');
 });

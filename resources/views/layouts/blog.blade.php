@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,10 +15,14 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         .blog-main {
             background-color: #faf8f8 !important;
             width: 100%;
@@ -25,6 +30,7 @@
             margin-top: 8vh;
             display: flex;
         }
+
         .blog-nav {
             width: 100%;
             height: 8vh;
@@ -35,31 +41,38 @@
             display: flex;
             justify-content: space-between;
         }
+
         .blog-navigator {
             display: flex;
         }
+
         .blog-nav-item {
             list-style: none;
             margin: auto 30px;
         }
+
         .blog-nav-item a {
             text-decoration: none;
             color: #f3f3f3 !important;
             font-size: 1.2rem;
         }
+
         .blog-nav-item a:hover {
             text-decoration: underline;
             text-decoration-color: white;
             color: #6b92ce !important;
             font-size: 1.3rem;
         }
+
         .rtl {
             direction: rtl !important;
         }
+
         .blog-panel {
             width: 70%;
             height: 100%;
         }
+
         .blog-side {
             width: 30%;
             height: 100%;
@@ -74,6 +87,7 @@
             display: flex;
             cursor: pointer;
         }
+
         .blog-card img {
             height: 90%;
             width: 350px;
@@ -87,6 +101,7 @@
         .blog-card-content a {
             text-decoration: none;
         }
+
         .blog-card-title {
             color: #333;
             font-size: 2rem;
@@ -152,6 +167,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="app">
         <v-app>
@@ -159,10 +175,10 @@
                 <nav class="blog-nav">
                     <div class="blog-nav rtl">
                         <ul class="blog-navigator">
-                            <li class="blog-nav-item"><a href="{{ route('blog.index') }}"> خانه </a></li>
+                            <li class="blog-nav-item"><a href="{{ route('blog.index') }}"> <i class="fa fa-home fa-2x"></i> </a></li>
                             <div class="dropdown">
                                 <button class="btn text-white dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    نگارش
+                                    <i class="fa fa-2x fa-pencil-square-o"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                     <a href="{{ route('blog.create') }}" class="dropdown-item" type="button"> جدید </a>
@@ -171,15 +187,30 @@
                             </div>
 
                             <div class="dropdown">
+                                <button class="btn text-white dropdown-toggle" type="button" id="notifSel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell-o fa-2x"></i></button>
+                                <div class="dropdown-menu" aria-labelledby="notif">
+                                    @auth
+                                    @forelse (auth()->user()->getNotif('blog') as $notification )
+
+                                    <a href="{{ $notification->data['path'] }}" class="dropdown-item" type="button">{{ $notification->data['message']}}</a> <a href="{{route('blog.notifs.read', $notification->id)}}" class="btn btn-sm btn-danger">read</a>
+                                    @empty
+                                    <h5>No Notifications for now !!!</h5>
+                                    @endforelse
+                                    <a href="{{route('blog.notifs.readAll', ['app'=> 'blog'])}}">Clear All</a>
+                                    @endauth
+                                </div>
+                            </div>
+
+                            <div class="dropdown">
                                 <button class="btn text-white dropdown-toggle" type="button" id="catSel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    category </button>
+                                    <i class="fa fa-table fa-2x"></i> </button>
                                 <div class="dropdown-menu" aria-labelledby="catSel">
                                     @foreach ($categories as $category)
                                     <a href="{{ route('blog.category.posts', $category) }}" class="dropdown-item" type="button">{{$category->name}}</a>
                                     @endforeach
                                 </div>
                             </div>
-
                         </ul>
 
                         <h2 class="blog-logo"> بلاگ </h2>
@@ -221,4 +252,5 @@
         </v-app>
     </div>
 </body>
+
 </html>

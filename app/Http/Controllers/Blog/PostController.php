@@ -53,6 +53,8 @@ class PostController extends Controller
 
     public function show($categoryId, Post $post)
     {
+        $post = $post->load('comments')->load('comments.owner');
+        //TODO : protect user info to only show name and email on owner
         return view('Blog.show')
             ->with(['post' => $post]);
     }
@@ -89,7 +91,7 @@ class PostController extends Controller
             'body' => request('body'),
             'seo_title' => request('seo_title'),
             'status' => request('status'),
-            'allow_comments' => (request('title') ? 1 : 0),
+            'allow_comments' => ($request->allow_comments ? 1 : 0),
             'cover_img' => $cover_img,
             'category_id' => request('category_id'),
         ]);

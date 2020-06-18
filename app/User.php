@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
+    public $notifs = [];
+    public $notifsCount;
+
 
     /**
      * The attributes that are mass assignable.
@@ -36,4 +39,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getNotif($app)
+    {
+        foreach (auth()->user()->unreadNotifications as $notification) {
+            if ($notification->data['app'] == $app) {
+                array_push($this->notifs, $notification);
+                $this->notifsCount++;
+            }
+        }
+        return $this->notifs;
+    }
 }
