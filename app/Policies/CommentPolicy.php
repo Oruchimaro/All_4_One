@@ -41,7 +41,11 @@ class CommentPolicy
      */
     public function create(User $user)
     {
-        //
+        $lastComment = $user->fresh()->lastReply;
+
+        if (!$lastComment) return true;
+
+        return !$lastComment->wasJustPublished();
     }
 
     /**
@@ -65,7 +69,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        return $user->id === $comment->user_id ;
+        return $user->id === $comment->user_id;
     }
 
     /**

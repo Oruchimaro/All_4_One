@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Notifications\NewCommentNotification;
 use App\Notifications\NewCommentReplyNotification;
+use Carbon\Carbon;
 
 class Comment extends Model
 {
@@ -55,5 +56,10 @@ class Comment extends Model
                 ->author
                 ->notify(new NewCommentNotification($comment, 'blog'));
         }
+    }
+
+    public function wasJustPublished()
+    {
+        return $this->created_at->gt(Carbon::now()->subMinute());
     }
 }

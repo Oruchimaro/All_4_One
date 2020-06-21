@@ -10,6 +10,11 @@ class CommentController extends Controller
 {
     public function commentPost(Post $post, Spam $spam)
     {
+        //protect against spam creating replies
+        if (\Gate::denies('create', new Comment)) {
+            return response('You are posting Too Frequently, Take a break :)', 422);
+        }
+
         $this->validate(request(), [
             'body' => 'required'
         ]);

@@ -50,4 +50,10 @@ class User extends Authenticatable
         }
         return $this->notifs;
     }
+
+
+    public function lastReply()
+    {
+        return $this->hasOne(Comment::class)->latest();
+    }
 }
