@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Notifications\NewCommentNotification;
+use App\Notifications\NewCommentReplyNotification;
 
 class Comment extends Model
 {
@@ -23,16 +25,35 @@ class Comment extends Model
         return $this->hasMany(Comment::class, 'parent_id');
     }
 
+    public function father()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
     public function isReply()
     {
-        if (!$this->parent_id) {
-            return false;
-        }
-        return true;
+        return (!$this->parent_id) ? false : true;
     }
 
     public function path()
     {
-        return $this->commentable->path() . "#com-{$this->id}";
+        return $this
+            ->commentable
+            ->path() . "#com-{$this->id}";
+    }
+
+    public function manageNotifications(Comment $comment)
+    {
+        if ($comment->isReply()) {
+            $comment
+                ->father
+                ->owner
+                ->notify(new NewCommentReplyNotification($comment, 'blog'));
+        } else {
+            $comment
+                ->commentable
+                ->author
+                ->notify(new NewCommentNotification($comment, 'blog'));
+        }
     }
 }

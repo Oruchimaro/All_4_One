@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Blog;
 
 use App\Blog\Post;
+use App\Classes\Inspections\Spam;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBlogPost;
@@ -72,14 +73,7 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
 
-        $request->validate([
-            'title' => 'required|max:255',
-            'body' => 'required',
-        ], [
-            'title.required' => 'A title is required',
-            'title.max' => 'Title must be max 255 charachters',
-            'body.required' => 'Body is required',
-        ]);
+        $this->validatePost();
 
         $cover_img = request('cover_img') ?
             $this->fileOps(request('cover_img'), 'public/images/covers')
@@ -137,5 +131,24 @@ class PostController extends Controller
     public function makeSlug($value, $seprator = '-')
     {
         return Str::slug($value, '-');
+    }
+
+
+
+    public function validatePost()
+    {
+        $this
+            ->validate(request(), [
+                'title' => 'required|max:255',
+                'body' => 'required',
+            ], [
+                'title.required' => 'A title is required',
+                'title.max' => 'Title must be max 255 charachters',
+                'body.required' => 'Body is required',
+            ]);
+
+
+        resolve(Spam::class)->detect(request('title'));
+        resolve(Spam::class)->detect(request('body'));
     }
 }
